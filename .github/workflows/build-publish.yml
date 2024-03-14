@@ -1,0 +1,28 @@
+name: Run Docker Container
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+
+      - name: Run Docker Container
+        run: |
+          # Pull the Docker image and run
+          env
+          docker run --pull always --rm --mount type=bind,source="$(pwd)",target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest
+          #docker pull testgitlabfds.jfrog.io/jfrog-github-docker/jfrog-docker-example-image:${{ github.run_number }}
+          # Run the Docker container
+          #docker run -d -p 8080:80 testgitlabfds.jfrog.io/jfrog-github-docker/jfrog-docker-example-image:${{ github.run_number }}
