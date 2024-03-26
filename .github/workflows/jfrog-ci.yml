@@ -21,5 +21,5 @@ jobs:
         run: |
           env_file=`mktemp`
           env | grep -E "JFROG_CLI_BUILD_NUMBER" > $env_file
-          docker run --pull always --rm --mount type=bind,source="$(pwd)",target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest
+          docker run --pull always --rm --env-file $env_file --mount type=bind,source="$(pwd)",target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest
           rm $env_file
